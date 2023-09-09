@@ -1,0 +1,47 @@
+.TitleButton {
+    width: 40vw;
+    height: 10vh;
+    background-color:white;
+    color:black;
+    font-size: larger;
+    border-radius: 4vh;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    transition: 0.3s;
+    cursor: pointer;
+    border: black;
+}
+
+.TitleButton:hover {
+    transform: scale(1.1);
+}
+
+.TitleButton:active {
+    transform: scale(1.0);
+}
+
+.selected {
+    color: white;
+}
+
+.easy {
+    background-color: green;
+}
+
+.normal {
+    background-color: orange;
+}
+
+.hard {
+    background-color: darkred;
+}
+
+.GuessHeader {
+    color: white;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 4vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1vh;
+}

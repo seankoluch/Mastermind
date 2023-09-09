@@ -1,0 +1,29 @@
+.container {
+  position: relative;
+  margin: 1vw;
+  width: 4vw;
+  height: 4vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  width: 2vw;
+  height: 2vw;
+  border-radius: 2vw;
+  display: inline-block;
+}
+
+  .hit {
+    background-color: lime;
+  }
+
+  .blow {
+    background-color: white;
+  }
+
+  .empty {
+    background-color: black;
+  }
