@@ -14,7 +14,7 @@ function Tutorial() {
                 secret code is randomly generated, and you must try to guess it
                 within a limited number of attempts. Here's how the game is played:
                 <ol>
-                    <li>You submit a guess</li>
+                    <li>You submit a guess.</li>
                     <li>
                         The game provides feedback on how accurate the guess is
                         using "hits" and "blows"
@@ -38,7 +38,7 @@ function Tutorial() {
                             </li>
                         </ul>
                     </li>
-                    <li>Repeat steps 1. and 2. until you guess the final code, or run out of attempts</li>
+                    <li>Repeat steps 1. and 2. until you guess the final code, or run out of attempts.</li>
                 </ol>
                 On the right is an interactive tool for getting a grasp on how hits and blows work.
                 There is an example "final answer", and you can change the colors of the guess to
