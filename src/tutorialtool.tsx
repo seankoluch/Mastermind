@@ -34,7 +34,7 @@ class TutorialTool extends React.Component {
   createAnswerColumn() {
     return (
       <div className='column'>
-        <HitsBlowsDisplay hits={0} blows={0} />
+        <div className='container'></div>
         {this.state.finalCode.map((color: string, index: number) => (
           <GameButtonSubmitted color={color}/>
         ))}

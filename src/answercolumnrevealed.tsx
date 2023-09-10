@@ -1,6 +1,5 @@
 import React from 'react';
 import './grid.css';
-import HitsBlowsDisplay from './hitsandblows';
 import GameButtonSubmitted from './gamebuttonsubmitted';
 
 interface AnswerColumnRevealedProps {
@@ -17,7 +16,7 @@ for (let i = 0; i < 4; i++) {
 return (
     <div className='column'>
       <div className='GuessHeader invisible'>{'1'}</div>
-      <HitsBlowsDisplay hits={0} blows={0} />
+      <div className='container'></div>
       <div className='boxed'>
       {answerColumnRevealed}
       </div>

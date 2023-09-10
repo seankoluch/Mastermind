@@ -1,7 +1,8 @@
 .container {
   position: relative;
+  left: -4%;
   margin: 1vw;
-  width: 4vw;
+  width: 4.5vw;
   height: 4vw;
   display: flex;
   flex-wrap: wrap;
@@ -10,20 +11,29 @@
 }
 
 .circle {
-  width: 2vw;
-  height: 2vw;
-  border-radius: 2vw;
+  width: 1.8vw;
+  height: 1.8vw;
+  border-radius: 1.8vw;
+  margin: 1px;
   display: inline-block;
 }
 
   .hit {
     background-color: lime;
+    border: solid lime 2px;
   }
 
   .blow {
     background-color: white;
+    border: solid white 2px;
   }
 
   .empty {
+    background-color: black;
+    border: dashed white 2px;
+  }
+
+  .invisible {
+    border: solid black 1px;
     background-color: black;
   }
