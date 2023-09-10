@@ -4,7 +4,7 @@ import Tutorial from './tutorial.tsx';
 import Game from './game.tsx';
 import Settings from './settings.tsx';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, /*Switch*/ } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, /*Switch*/ } from 'react-router-dom';
 
 function App() {
   const numButtons: number = 4;

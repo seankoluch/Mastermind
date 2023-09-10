@@ -20,7 +20,7 @@ const Game: React.FC<GameProps> = (props) => {
 
   const onSubmit = (columnCode: string[]) => {
     if (columnCode.includes('grey')) {
-      console.log('Please select colors for all buttons.')
+      
     }
     else if (columnCode.join() === props.finalCode.join()) {
       setActiveColumns(activeColumns + 1);
@@ -45,20 +45,20 @@ const Game: React.FC<GameProps> = (props) => {
     return (
       <div className="Game">
         <Link to="/"><div className="titlescreen-return">Title Screen</div></Link>
-        <div className="restart" onClick={() => window.location.reload()}>Restart</div>
+        <div className="restart" onClick={() => {setActiveColumns(1); setHasLost(false); setHasWon(false)}}>Restart</div>
         <div className="guess-list">
           {columns}
           {hasWon? 
             <>
               <header className="you-win">YOU WIN!</header>
               <AnswerColumnRevealed finalCode={props.finalCode}/>
-              <div className="play-again" onClick={() => window.location.reload()}>Play Again</div>
+              <div className="play-again" onClick={() => {setActiveColumns(1); setHasLost(false); setHasWon(false)}}>Play Again</div>
             </>:
           hasLost?
             <>
               <header className="you-lose">YOU LOSE!</header>
               <AnswerColumnRevealed finalCode={props.finalCode}/>
-              <div className="play-again" onClick={() => window.location.reload()}>Play Again</div>
+              <div className="play-again" onClick={() => {setActiveColumns(1); setHasLost(false); setHasWon(false)}}>Play Again</div>
             </>:
           <AnswerColumnHidden/>}
         </div>
