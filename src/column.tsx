@@ -66,12 +66,20 @@ class Column extends React.Component<ColumnProps, ColumnState> {
     };
   }
 
+  resetColumn = () => {
+    this.setState({
+      currentCode: Array(numButtons).fill('grey'),
+      hits: 0,
+      blows: 0
+    });
+  };
+
   createActiveColumn = () => {
     return (
       <div className='column'>
       <div className='GuessHeader'>{this.props.index + 1}</div>
       <HitsBlowsDisplay hits={0} blows={0} />
-      {this.props.isGameOver ? (
+      {this.props.isGameOver? (
         Array(numButtons).fill(<GameButtonSubmitted color={'grey'}/>))
       : (
         <>
@@ -124,6 +132,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
     });
   };
 
+  
   render() {
     const isSubmitted = (this.props.index < this.props.activeColumns - 1);
     const isActive = (this.props.index === this.props.activeColumns - 1);
