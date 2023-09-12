@@ -1,8 +1,9 @@
 .container {
   position: relative;
-  left: -4%;
-  margin: 1vw;
-  width: 4.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6vw;
   height: 4vw;
   display: flex;
   flex-wrap: wrap;
@@ -20,17 +21,17 @@
 
   .hit {
     background-color: lime;
-    border: solid lime 2px;
+    border: solid lime 0.105vw;
   }
 
   .blow {
     background-color: white;
-    border: solid white 2px;
+    border: solid white 0.105vw;
   }
 
   .empty {
     background-color: black;
-    border: dashed white 2px;
+    border: dashed white 0.105vw;
   }
 
   .invisible {
