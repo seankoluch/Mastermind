@@ -1,23 +1,22 @@
 import React from 'react';
 import './grid.css';
-import GameButtonHidden from './gamebuttonhidden';
 
 function AnswerColumnHidden() {
 
-let answerColumnHidden=[];
-for (let i = 0; i < 4; i++) {
-    answerColumnHidden.push(<GameButtonHidden/>);
-}
+  let answerColumnHidden=[];
+  for (let i = 0; i < 4; i++) {
+    answerColumnHidden.push(<div className='GameButton hidden'>?</div>);
+  }
 
-return (
+  return (
     <div className='column'>
       <div className='GuessHeader invisible'>{'1'}</div>
       <div className='container'></div>
       <div className='boxed'>
-      {answerColumnHidden}
+        {answerColumnHidden}
       </div>
     </div>
-)
+  )
 }
 
 export default AnswerColumnHidden;

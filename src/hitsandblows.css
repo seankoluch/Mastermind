@@ -19,22 +19,22 @@
   display: inline-block;
 }
 
-  .hit {
-    background-color: lime;
-    border: solid lime 0.105vw;
-  }
+.hit {
+  background-color: lime;
+  border: solid lime 0.105vw;
+}
 
-  .blow {
-    background-color: white;
-    border: solid white 0.105vw;
-  }
+.blow {
+  background-color: white;
+  border: solid white 0.105vw;
+}
 
-  .empty {
-    background-color: black;
-    border: dashed white 0.105vw;
-  }
+.empty {
+  background-color: black;
+  border: dashed white 0.105vw;
+}
 
-  .invisible {
-    border: solid black 1px;
-    background-color: black;
-  }
+.invisible {
+  border: solid black 1px;
+  background-color: black;
+}

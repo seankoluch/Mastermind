@@ -32,9 +32,6 @@ class Game extends React.Component<GameProps, GameState> {
   }
 
   createFinalCode = (gameDifficulty: string) => {
-  if (gameDifficulty === 'Easy') {
-    const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
-
     const shuffleArray = (array: string[]): string[] => {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -44,41 +41,32 @@ class Game extends React.Component<GameProps, GameState> {
       }
       return array;
     };
-    return shuffleArray(colorPalette).slice(0, 4);
-  } else if (gameDifficulty === 'Normal') {
-    const colorPalette = ['red', 'red', 'lime', 'lime', 'white', 'white',
-                          'dodgerblue', 'dodgerblue', 'fuchsia', 'fuchsia', 'yellow', 'yellow'];
 
-    const shuffleArray = (array: string[]): string[] => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
+    if (gameDifficulty === 'Easy') {
+      const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+      return shuffleArray(colorPalette).slice(0, 4);
+    } else if (gameDifficulty === 'Normal') {
+      const colorPalette = ['red', 'red', 'lime', 'lime', 'white', 'white',
+      'dodgerblue', 'dodgerblue', 'fuchsia', 'fuchsia', 'yellow', 'yellow'];
+      return shuffleArray(colorPalette).slice(0, 4);
+    } else {
+      const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+      const array: string[] = [];
+      for (let i = 0; i < 4; i++) {
+        array.push(colorPalette[Math.floor(Math.random() * colorPalette.length)]);
       }
       return array;
-    };
-    return shuffleArray(colorPalette).slice(0, 4);
-  } else {
-    const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
-    const array: string[] = [];
-
-    for (let i = 0; i < 4; i++) {
-      array.push(colorPalette[Math.floor(Math.random() * colorPalette.length)]);
     }
-    return array;
-  }
   }
 
   onSubmit = (columnCode: string[]) => {
-    if (columnCode.includes('grey')) {
-      
-    }
-    else if (columnCode.join() === this.state.finalCode.join()) {
-      this.setState({ activeColumns: this.state.activeColumns + 1})
-      this.setState({hasWon: true});
-    } else {
-      this.setState({ activeColumns: this.state.activeColumns + 1})
+    if (!columnCode.includes('grey')) {
+      if (columnCode.join() === this.state.finalCode.join()) {
+        this.setState({ activeColumns: this.state.activeColumns + 1})
+        this.setState({hasWon: true});
+      } else {
+        this.setState({ activeColumns: this.state.activeColumns + 1})
+      }
       if (this.state.activeColumns === this.state.numGuesses) {
         this.setState({hasLost: true});
       };

@@ -12,7 +12,6 @@ interface GameButtonState {
 }
 
 class GameButton extends React.Component<GameButtonProps, GameButtonState>{
-    
     constructor(props: GameButtonProps){
         super(props);
         this.state = {colorIndex: -1};
@@ -20,9 +19,9 @@ class GameButton extends React.Component<GameButtonProps, GameButtonState>{
 
     getColor = () => {
         if(this.state.colorIndex === -1){
-          return 'grey';
+            return 'grey';
         } else {
-          return this.props.colorSet[this.state.colorIndex];
+            return this.props.colorSet[this.state.colorIndex];
         }
       }
 

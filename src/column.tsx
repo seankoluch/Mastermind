@@ -28,29 +28,30 @@ function FindHitsAndBlows(code: string[], answer: string[]) {
   let hasHit = [];
 
   for (let i = 0; i < answer.length; i++) {
-      if (map.get(answer[i]) === undefined) {
-          map.set(answer[i], 1);
-      } else {
-          map.set(answer[i], map.get(answer[i])! + 1);
-      }
+    if (map.get(answer[i]) === undefined) {
+      map.set(answer[i], 1);
+    } else {
+      map.set(answer[i], map.get(answer[i])! + 1);
+    }
   }
 
   for (let i = 0; i < code.length; i++) {
-      if (code[i] === answer[i]) {
-          hits++;
-          map.set(code[i], map.get(code[i])! - 1);
-          hasHit.push(i);
-      }
+    if (code[i] === answer[i]) {
+      hits++;
+      map.set(code[i], map.get(code[i])! - 1);
+      hasHit.push(i);
+    }
   }
 
   for (let i = 0; i < code.length; i++) {
-      if ((answer.includes(code[i])) && (answer.indexOf(code[i]) !== i)) {
-          if ((map.get(code[i])! > 0) && !hasHit.includes(i)) {
-              blows++;
-              map.set(code[i], map.get(code[i])! - 1);
-          }
+    if ((answer.includes(code[i])) && (answer.indexOf(code[i]) !== i)) {
+      if ((map.get(code[i])! > 0) && !hasHit.includes(i)) {
+        blows++;
+        map.set(code[i], map.get(code[i])! - 1);
       }
+    }
   }
+  
   return [hits, blows];
 }
 
@@ -81,7 +82,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
       <HitsBlowsDisplay hits={0} blows={0} />
       {this.props.isGameOver? (
         Array(numButtons).fill(<GameButtonSubmitted color={'grey'}/>))
-      : (
+      :(
         <>
           {Array.from({ length: numButtons }, (_, index) => (
             <GameButton
@@ -139,9 +140,9 @@ class Column extends React.Component<ColumnProps, ColumnState> {
 
     return (
       <>
-      { isSubmitted && <> {this.createSubmittedColumn()} </> }
-      { isActive && <> {this.createActiveColumn()} </> }
-      { !isSubmitted && !isActive && <> {this.createInactiveColumn()} </> }
+        { isSubmitted && <> {this.createSubmittedColumn()} </> }
+        { isActive && <> {this.createActiveColumn()} </> }
+        { !isSubmitted && !isActive && <> {this.createInactiveColumn()} </> }
       </>
     )
   }

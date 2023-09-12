@@ -7,22 +7,22 @@ interface AnswerColumnRevealedProps {
 }
 
 class AnswerColumnRevealed extends React.Component<AnswerColumnRevealedProps> {
-render() {
-let answerColumnRevealed=[];
-for (let i = 0; i < 4; i++) {
-    answerColumnRevealed.push(<GameButtonSubmitted color={this.props.finalCode[i]}/>);
-}
+    render() {
+        let answerColumnRevealed=[];
+        for (let i = 0; i < 4; i++) {
+            answerColumnRevealed.push(<GameButtonSubmitted color={this.props.finalCode[i]}/>);
+        }
 
-return (
-    <div className='column'>
-      <div className='GuessHeader invisible'>{'1'}</div>
-      <div className='container'></div>
-      <div className='boxed'>
-      {answerColumnRevealed}
-      </div>
-    </div>
-)
-}
+        return (
+            <div className='column'>
+                <div className='GuessHeader invisible'>{'1'}</div>
+                <div className='container'></div>
+                <div className='boxed'>
+                    {answerColumnRevealed}
+                </div>
+            </div>
+        )
+    }
 }
 
 export default AnswerColumnRevealed;
