@@ -1,10 +1,13 @@
 import React from 'react';
 import './grid.css';
+interface AnswerColumnHiddenProps {
+  finalCode: string[]
+}
 
-function AnswerColumnHidden() {
-
+class AnswerColumnHidden extends React.Component<AnswerColumnHiddenProps> {
+render() {
   let answerColumnHidden=[];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < this.props.finalCode.length; i++) {
     answerColumnHidden.push(<div className='GameButton hidden'>?</div>);
   }
 
@@ -18,5 +21,7 @@ function AnswerColumnHidden() {
     </div>
   )
 }
+}
+
 
 export default AnswerColumnHidden;

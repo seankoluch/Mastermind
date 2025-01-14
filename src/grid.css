@@ -128,7 +128,7 @@
 
 .bullets {
   width: 40vw;
-  height: 10vh;
+  height: 8vh;
   font-size: 1.5vw;
   display: flex;
   flex-direction: column;
@@ -165,4 +165,92 @@
 
 .text {
   width: 80%;
+}
+
+
+.difficulty-display {
+  position:fixed;
+  top:1vh;
+  left:1vw;
+  font-size:50px;
+}
+
+.streak-display {
+  position:fixed;
+  top:1vh;
+  right:1vw;
+  font-size:50px;
+}
+
+.hits-blows {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+h1 {
+  font-size: 3rem; /* Make the main header larger */
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.leaderboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  width: 90%; /* Make the grid container take up 90% of the screen width */
+  max-width: 1400px; /* Set a maximum width for the leaderboard */
+  margin-top: 20px;
+}
+
+.leaderboard-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: black;
+  height: 100%;
+}
+
+.leaderboard-column h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.score-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.5rem;
+}
+
+.score-rank {
+  width: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.score-name {
+  flex-grow: 1;
+  text-align: left;
+  padding-left: 15px;
+}
+
+.score-value {
+  width: 80px;
+  text-align: right;
+  padding-right: 15px;
 }

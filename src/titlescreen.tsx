@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function TitleScreen() {
     return (
         <div className = "TitleScreen">
-            <h1>Hit and Blow!</h1>
+            <h1>M A S T E R M I N D</h1>
             <Link to ="/Game">
                 <button className = 'TitleButton'>Start Game</button>
             </Link>
@@ -15,6 +15,9 @@ function TitleScreen() {
             </Link>
             <Link to ="/Settings">
                 <button className = 'TitleButton'>Choose Difficulty</button>
+            </Link>
+            <Link to ="/Leaderboard">
+                <button className = 'TitleButton'>Leaderboard</button>
             </Link>
         </div>
     )

@@ -11,6 +11,7 @@ interface ColumnProps {
   answer: string[];
   activeColumns: number;
   isGameOver: boolean;
+  numButtons: number;
 }
 
 interface ColumnState {
@@ -18,8 +19,6 @@ interface ColumnState {
   hits: number;
   blows: number;
 }
-
-const numButtons = 4;
 
 function FindHitsAndBlows(code: string[], answer: string[]) {
   let hits: number = 0;
@@ -61,7 +60,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
   constructor(props: ColumnProps) {
     super(props);
     this.state = {
-      currentCode: Array(numButtons).fill('grey'),
+      currentCode: Array(this.props.numButtons).fill('grey'),
       hits: 0,
       blows: 0
     };
@@ -69,7 +68,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
 
   resetColumn = () => {
     this.setState({
-      currentCode: Array(numButtons).fill('grey'),
+      currentCode: Array(this.props.numButtons).fill('grey'),
       hits: 0,
       blows: 0
     });
@@ -81,10 +80,10 @@ class Column extends React.Component<ColumnProps, ColumnState> {
       <div className='GuessHeader'>{this.props.index + 1}</div>
       <HitsBlowsDisplay hits={0} blows={0} />
       {this.props.isGameOver? (
-        Array(numButtons).fill(<GameButtonSubmitted color={'grey'}/>))
+        Array(this.props.numButtons).fill(<GameButtonSubmitted color={'grey'}/>))
       :(
         <>
-          {Array.from({ length: numButtons }, (_, index) => (
+          {Array.from({ length: this.props.numButtons }, (_, index) => (
             <GameButton
               index={index}
               colorSet={this.colorSet}
@@ -103,7 +102,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
     <div className='column inactive'>
       <div className='GuessHeader'>{this.props.index + 1}</div>
       <HitsBlowsDisplay hits={0} blows={0} />
-      {Array(numButtons).fill(<GameButtonInactive/>)}
+      {Array(this.props.numButtons).fill(<GameButtonInactive/>)}
     </div>
     )
   }
@@ -113,7 +112,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
     <div className='column'>
       <div className='GuessHeader'>{this.props.index + 1}</div>
       <HitsBlowsDisplay hits={this.state.hits} blows={this.state.blows} />
-      {Array.from({ length: numButtons }, (_, index) => (
+      {Array.from({ length: this.props.numButtons }, (_, index) => (
         <GameButtonSubmitted color={this.state.currentCode[index]}/>
       ))}
     </div>

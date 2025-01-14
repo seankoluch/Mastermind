@@ -35,6 +35,10 @@
     background-color: darkred;
 }
 
+.insane {
+    background-color: rgb(73, 3, 73);
+}
+
 .GuessHeader {
     color: white;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

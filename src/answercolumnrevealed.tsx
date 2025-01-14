@@ -9,7 +9,7 @@ interface AnswerColumnRevealedProps {
 class AnswerColumnRevealed extends React.Component<AnswerColumnRevealedProps> {
     render() {
         let answerColumnRevealed=[];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < this.props.finalCode.length; i++) {
             answerColumnRevealed.push(<GameButtonSubmitted color={this.props.finalCode[i]}/>);
         }
 

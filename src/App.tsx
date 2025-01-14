@@ -3,6 +3,7 @@ import TitleScreen from './titlescreen.tsx';
 import Tutorial from './tutorial.tsx';
 import Game from './game.tsx';
 import Settings from './settings.tsx';
+import Leaderboard from './leaderboard.tsx';
 import React from 'react';
 import { HashRouter, Route, Routes, /*Switch*/ } from 'react-router-dom';
 
@@ -30,6 +31,7 @@ class App extends React.Component<{}, AppState> {
           <Route path = "/HowToPlay" element={<Tutorial />} />
           <Route path = "/Game" element ={<Game gameDifficulty={this.state.gameDifficulty}/>} />
           <Route path = "/Settings" element ={<Settings onSubmit={this.onSubmit} currentDifficulty={this.state.gameDifficulty} />} />
+          <Route path = "/Leaderboard" element={<Leaderboard />} />
         </Routes>
       </HashRouter>
     );
