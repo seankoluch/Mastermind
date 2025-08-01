@@ -16,9 +16,6 @@ function TitleScreen() {
             <Link to ="/Settings">
                 <button className = 'TitleButton'>Choose Difficulty</button>
             </Link>
-            <Link to ="/Leaderboard">
-                <button className = 'TitleButton'>Leaderboard</button>
-            </Link>
         </div>
     )
 }
