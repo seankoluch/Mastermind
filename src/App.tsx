@@ -31,7 +31,6 @@ class App extends React.Component<{}, AppState> {
           <Route path = "/HowToPlay" element={<Tutorial />} />
           <Route path = "/Game" element ={<Game gameDifficulty={this.state.gameDifficulty}/>} />
           <Route path = "/Settings" element ={<Settings onSubmit={this.onSubmit} currentDifficulty={this.state.gameDifficulty} />} />
-          <Route path = "/Leaderboard" element={<Leaderboard />} />
         </Routes>
       </HashRouter>
     );
