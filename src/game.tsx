@@ -257,7 +257,7 @@ class Game extends React.Component<GameProps, GameState> {
 
   fillActiveColumnWithHint = () => {
     
-    if (this.solverGuessCount < this.state.hintLimit) {
+    if (this.solverGuessCount < this.state.hintLimit && this.state.activeColumns != 1) {
       const activeIndex = this.state.activeColumns - 1;
       const columnRef = this.columnsRefs[activeIndex];
 
