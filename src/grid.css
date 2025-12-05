@@ -108,6 +108,28 @@
   transform: scale(1.1);
 }
 
+.hint {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 1vh;
+  left: 29vw;
+  width: 12vw;
+  height: 6vh;
+  background-color: white;
+  color: black;
+  border-radius: 1vw;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 2vw;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.hint:hover {
+  transform: scale(1.1);
+}
+
 .difficulty-select-container {
   display: flex;
   flex-direction: column;

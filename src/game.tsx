@@ -7,7 +7,7 @@ import AnswerColumnRevealed from './answercolumnrevealed';
 import { Link } from 'react-router-dom';
 
 interface GameProps {
-  gameDifficulty: string
+  gameDifficulty: string;
 }
 
 interface GameState {
@@ -17,7 +17,8 @@ interface GameState {
   finalCode: string[];
   numGuesses: number;
   gameStreak: number;
-  isSubmittingScore: boolean; // New state
+  bestNextGuess: string[];
+  hintLimit: number;
 }
 
 class Game extends React.Component<GameProps, GameState> {
@@ -25,75 +26,189 @@ class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
     this.state = {
-      isSubmittingScore: false,
       gameStreak: 0,
       activeColumns: 1,
       hasWon: false,
       hasLost: false,
       finalCode: this.createFinalCode(this.props.gameDifficulty),
-      numGuesses: this.props.gameDifficulty === 'Insane'? 6:this.props.gameDifficulty === 'Hard'? 6:(this.props.gameDifficulty === 'Normal')? 7: 8
+      numGuesses:
+        this.props.gameDifficulty === 'Insane' ? 6 :
+        this.props.gameDifficulty === 'Hard' ? 6 :
+        this.props.gameDifficulty === 'Normal' ? 7 : 8,
+      bestNextGuess: ['red', 'red', 'yellow', 'yellow'],
+      hintLimit: 
+        this.props.gameDifficulty === 'Insane' ? 0 :
+        this.props.gameDifficulty === 'Hard' ? 1 :
+        this.props.gameDifficulty === 'Normal' ? 2 : 3,
     };
   }
+
+  /** solver guess counter */
+  solverGuessCount = 0;
+
+  /** store history for the solver */
+  previousGuesses: string[][] = [];
+  previousFeedback: { hits: number; blows: number }[] = [];
+
+  /** basic evaluation function for Mastermind */
+  evaluateGuess(guess: string[], solution: string[]) {
+    let hits = 0;
+    let blows = 0;
+
+    const guessCopy = [...guess];
+    const solutionCopy = [...solution];
+
+    // hits
+    for (let i = 0; i < 4; i++) {
+      if (guessCopy[i] === solutionCopy[i]) {
+        hits++;
+        guessCopy[i] = "_";
+        solutionCopy[i] = "*";
+      }
+    }
+
+    // blows
+    for (let i = 0; i < 4; i++) {
+      if (guessCopy[i] !== "_" && solutionCopy.includes(guessCopy[i])) {
+        blows++;
+        solutionCopy[solutionCopy.indexOf(guessCopy[i])] = "*";
+      }
+    }
+
+    return { hits, blows };
+  }
+
+  /** generate all possible codes (6 colors, length 4) */
+  generateAllPossibleCodes() {
+    const colors = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+    const results: string[][] = [];
+
+    for (let a of colors)
+      for (let b of colors)
+        for (let c of colors)
+          for (let d of colors)
+            results.push([a, b, c, d]);
+
+    return results;
+  }
+
+  /** filter possible solutions that match all historical feedback */
+  filterByHistory(possible: string[][]) {
+    return possible.filter(code => {
+      return this.previousGuesses.every((g, idx) => {
+        const fb = this.evaluateGuess(g, code);
+        return fb.hits === this.previousFeedback[idx].hits &&
+               fb.blows === this.previousFeedback[idx].blows;
+      });
+    });
+  }
+
+  computeNextGuess() {
+  let possible = this.generateAllPossibleCodes();
+  possible = this.filterByHistory(possible);
+
+  if (this.props.gameDifficulty === 'Easy') {
+    // Only allow one of each color
+    possible = possible.filter(code => new Set(code).size === code.length);
+  }
+  // Normal: no filtering needed; can include duplicates if desired
+  // Hard/Insane: no filtering
+
+  // If no history, use standard opener
+  if (this.previousGuesses.length === 0) {
+    return ['red', 'lime', 'white', 'fuchsia'];
+  }
+
+  if (possible.length <= 2) return possible[0];
+
+  // Simplified Knuth minimax
+  let bestGuess = possible[0];
+  let bestScore = Infinity;
+  for (let guess of possible) {
+    const scoreMap: Record<string, number> = {};
+    for (let sol of possible) {
+      const fb = this.evaluateGuess(guess, sol);
+      const key = `${fb.hits}-${fb.blows}`;
+      scoreMap[key] = (scoreMap[key] || 0) + 1;
+    }
+    const worstCase = Math.max(...Object.values(scoreMap));
+    if (worstCase < bestScore) {
+      bestScore = worstCase;
+      bestGuess = guess;
+    }
+  }
+  return bestGuess;
+}
+
+
+
+  /** MAIN GAME CODE */
 
   createFinalCode = (gameDifficulty: string) => {
     const shuffleArray = (array: string[]): string[] => {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        const tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
+        [array[i], array[j]] = [array[j], array[i]];
       }
       return array;
     };
 
     if (gameDifficulty === 'Easy') {
-      const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
-      return shuffleArray(colorPalette).slice(0, 4);
+      const palette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+      return shuffleArray(palette).slice(0, 4);
     } else if (gameDifficulty === 'Normal') {
-      const colorPalette = ['red', 'red', 'lime', 'lime', 'white', 'white',
-      'dodgerblue', 'dodgerblue', 'fuchsia', 'fuchsia', 'yellow', 'yellow'];
-      return shuffleArray(colorPalette).slice(0, 4);
+      const palette = [
+        'red','red','lime','lime','white','white',
+        'dodgerblue','dodgerblue','fuchsia','fuchsia','yellow','yellow'
+      ];
+      return shuffleArray(palette).slice(0, 4);
     } else if (gameDifficulty === 'Hard') {
-      const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
-      const array: string[] = [];
-      for (let i = 0; i < 4; i++) {
-        array.push(colorPalette[Math.floor(Math.random() * colorPalette.length)]);
-      } 
-      return array;
+      const palette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+      return Array.from({ length: 4 }, () => palette[Math.floor(Math.random() * palette.length)]);
     } else {
-      const colorPalette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
-      const array: string[] = [];
-      for (let i = 0; i < 5; i++) {
-        array.push(colorPalette[Math.floor(Math.random() * colorPalette.length)]);
-      }
-      return array;
-    }
-  }
-
-  onSubmit = (columnCode: string[]) => {
-    if (!columnCode.includes('grey')) {
-      if (columnCode.join() === this.state.finalCode.join()) {
-        this.setState({ activeColumns: this.state.activeColumns + 1})
-        this.setState({hasWon: true});
-      } else {
-        this.setState({ activeColumns: this.state.activeColumns + 1})
-      }
-      if (this.state.activeColumns === this.state.numGuesses) {
-        this.setState({hasLost: true});
-      };
+      const palette = ['red', 'lime', 'white', 'dodgerblue', 'fuchsia', 'yellow'];
+      return Array.from({ length: 5 }, () => palette[Math.floor(Math.random() * palette.length)]);
     }
   };
 
+  onSubmit = (columnCode: string[]) => {
+    if (columnCode.includes('grey')) return;
+
+    const result = this.evaluateGuess(columnCode, this.state.finalCode);
+
+    this.previousGuesses.push(columnCode);
+    this.previousFeedback.push(result);
+
+    // win check
+    if (result.hits === 4) {
+      this.setState({
+        hasWon: true,
+        activeColumns: this.state.activeColumns + 1
+      });
+    } else {
+      this.setState({
+        activeColumns: this.state.activeColumns + 1
+      });
+    }
+
+    if (this.state.activeColumns === this.state.numGuesses) {
+      this.setState({ hasLost: true });
+    }
+
+    this.setState({ bestNextGuess: this.computeNextGuess() });
+
+  };
+
   columnsRefs: (Column | null)[] = [];
-  columns:any[] = [];
+  columns: any[] = [];
 
   renderColumns = () => {
-    this.columns=[];
+    this.columns = [];
 
     for (let i = 0; i < this.state.numGuesses; i++) {
       this.columns.push(
         <Column
-          numButtons={this.props.gameDifficulty === 'Insane'?5:4}
+          numButtons={this.props.gameDifficulty === 'Insane' ? 5 : 4}
           activeColumns={this.state.activeColumns}
           index={i}
           onSubmit={this.onSubmit}
@@ -104,120 +219,83 @@ class Game extends React.Component<GameProps, GameState> {
         />
       );
     }
-
     return this.columns;
-  }
+  };
 
   resetColumnCodes = () => {
-    this.columnsRefs.forEach((columnRef) => {
-      if (columnRef) {
-        columnRef.resetColumn();
-      }
-    });
-  }
+    this.columnsRefs.forEach(ref => ref?.resetColumn());
+  };
 
-  resetGame = async (streakAdd: boolean) => {
-    const qualifiesForLeaderboard = streakAdd && await this.checkIfTopScore(this.state.gameStreak + 1);
-  
+  resetGame = (streakAdd: boolean) => {
+    this.previousGuesses = [];
+    this.previousFeedback = [];
+    this.solverGuessCount = 0;
+
     this.setState({
       gameStreak: streakAdd ? this.state.gameStreak + 1 : 0,
       activeColumns: 1,
       hasWon: false,
       hasLost: false,
-      isSubmittingScore: qualifiesForLeaderboard, // Enable submission if qualified
+      bestNextGuess: ['red','red','yellow','yellow'],
       finalCode: this.createFinalCode(this.props.gameDifficulty),
-      numGuesses: this.props.gameDifficulty === 'Insane' ? 6 : this.props.gameDifficulty === 'Hard' ? 6 : (this.props.gameDifficulty === 'Normal') ? 7 : 8
+      numGuesses:
+        this.props.gameDifficulty === 'Insane' ? 6 :
+        this.props.gameDifficulty === 'Hard' ? 6 :
+        this.props.gameDifficulty === 'Normal' ? 7 : 8
     });
-  
-    this.resetColumnCodes();
-  }
 
-  checkIfTopScore = async (score: number) => {
-    const gameKey = '8282e84b30a26cb68dad6c0a88ab78367943f01e';
-    const url = `https://purpletoken.com/update/v2/get_score?gamekey=${gameKey}&format=json&limit=5`;
-  
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-  
-      if (data.scores && data.scores.length > 0) {
-        const scores = data.scores.map((entry: any) => entry.score);
-        return scores.length < 5 || score > Math.min(...scores);
-      }
-      return true; // If no scores exist, any score qualifies.
-    } catch (error) {
-      console.error('Error fetching leaderboard scores:', error);
-      return false; // Default to not qualifying if there's an error.
-    }
+    this.resetColumnCodes();
+    this.resetHints();
   };
 
-  submitToLeaderboard = (name: string) => {
-    const gameKey = '8282e84b30a26cb68dad6c0a88ab78367943f01e';
-    const { gameStreak } = this.state;
-  
-    const formData = new URLSearchParams();
-    formData.append('gamekey', gameKey);
-    formData.append('player', name);
-    formData.append('score', gameStreak.toString());
-  
-    fetch('https://purpletoken.com/update/v2/submit_score', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert('Your score has been submitted!');
-          this.setState({ isSubmittingScore: false }); // Close the submission form
-        } else {
-          alert('Failed to submit score.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error submitting score:', error);
-      });
+  resetHints = () => {
+    this.setState({hintLimit:
+      this.props.gameDifficulty === 'Insane' ? 0 :
+      this.props.gameDifficulty === 'Hard' ? 1 :
+      this.props.gameDifficulty === 'Normal' ? 2 : 3});
   }
 
-  renderLeaderboardSubmission() {
-    return (
-      <div className="leaderboard-submission">
-        <h2>Congratulations! You're on the leaderboard!</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const playerName = (e.target as any).player.value.toUpperCase().slice(0, 3); // Ensure uppercase and limit to 3 chars
-            this.submitToLeaderboard(playerName);
-          }}
-        >
-          <input type="text" name="player" placeholder="Enter your name (3 letters)" maxLength={3} required />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    );
-  }
+  fillActiveColumnWithHint = () => {
+    
+    if (this.solverGuessCount < this.state.hintLimit) {
+      const activeIndex = this.state.activeColumns - 1;
+      const columnRef = this.columnsRefs[activeIndex];
+
+      if (columnRef && this.state.bestNextGuess.length === 4) {
+        columnRef.setColumnColors(this.state.bestNextGuess);
+      }
+      this.setState({
+        hintLimit: this.state.hintLimit - 1
+      })
+    }
+  };
 
   render() {
     return (
       <div className="Game">
         <Link to="/"><div className="titlescreen-return">Title Screen</div></Link>
+
         <div className="difficulty-display">{this.props.gameDifficulty} Difficulty</div>
         <div className="streak-display">Streak: {this.state.gameStreak}</div>
-        <div className="restart" onClick={() => { this.resetGame(this.state.hasWon); }}>Restart</div>
+
+        <div className="restart" onClick={() => this.resetGame(this.state.hasWon)}>Restart</div>
+        <div className="hint" onClick={this.fillActiveColumnWithHint}>Hints: {this.state.hintLimit}</div>
+
+
         <div className="guess-list">
           {this.renderColumns()}
           {(this.state.hasWon || this.state.hasLost) ? (
             <>
-              <header className={`you-${this.state.hasWon ? 'win' : 'lose'}`}>
-                {this.state.hasWon ? 'YOU WIN!' : 'YOU LOSE!'}
+              <header className={`you-${this.state.hasWon ? "win" : "lose"}`}>
+                {this.state.hasWon ? "YOU WIN!" : "YOU LOSE!"}
               </header>
               <AnswerColumnRevealed finalCode={this.state.finalCode} />
-              <div className="play-again" onClick={() => { this.resetGame(this.state.hasWon); }}>Play Again</div>
+              <div className="play-again" onClick={() => this.resetGame(this.state.hasWon)}>Play Again</div>
             </>
           ) : (
             <AnswerColumnHidden finalCode={this.state.finalCode} />
           )}
         </div>
-        {this.state.isSubmittingScore && this.renderLeaderboardSubmission()}
       </div>
     );
   }

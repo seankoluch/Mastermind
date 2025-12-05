@@ -88,6 +88,7 @@ class Column extends React.Component<ColumnProps, ColumnState> {
               index={index}
               colorSet={this.colorSet}
               colorSetCallBack={(colorIndex) => this.handleColorSetCallback(colorIndex, index)}
+              color={this.state.currentCode[index]}
             />
           ))}
           <button onClick={this.handleSubmit} className='SubmitButton'>Submit</button>
@@ -95,6 +96,10 @@ class Column extends React.Component<ColumnProps, ColumnState> {
       )}
     </div>
     )
+  }
+
+  setColumnColors(colors: string[]) {
+    this.setState({ currentCode: [...colors] });
   }
 
   createInactiveColumn = () => {
