@@ -33,7 +33,8 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             return (
                 <>
                 <ul className='bullets'>
-                    <li>8 total guesses</li>
+                    <li>8 guesses</li>
+                    <li>3 hints</li>
                     <li>Only one of each color is allowed in the final answer</li>
                     <li>Example final answers:</li>
                 </ul>
@@ -49,7 +50,8 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             return (
                 <>
                 <ul className='bullets'>
-                    <li>7 total guesses</li>
+                    <li>7 guesses</li>
+                    <li>2 hints</li>
                     <li>Two of each color are allowed in the final answer</li>
                     <li>Example final answers (includes easy difficulty final answers):</li>
                 </ul>
@@ -65,7 +67,8 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             return (
                 <>
                 <ul className='bullets'>
-                    <li>6 total guesses</li>
+                    <li>6 guesses</li>
+                    <li>1 hint</li>
                     <li>Any amount of each color is allowed in the final answer</li>
                     <li>Example final answers (includes easy and normal difficulty final answers):</li>
                 </ul>
@@ -81,7 +84,8 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             return (
                 <>
                 <ul className='bullets'>
-                    <li>6 total guesses</li>
+                    <li>6 guesses</li>
+                    <li>0 hints</li>
                     <li>Any amount of each color is allowed in the final answer</li>
                     <li>Final code is 5 colors</li>
                     <li>Example final answers:</li>
